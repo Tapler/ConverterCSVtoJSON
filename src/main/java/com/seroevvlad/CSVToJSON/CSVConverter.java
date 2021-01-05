@@ -10,7 +10,7 @@ public class CSVConverter {
     public static void main(String[] args) {
         String fileLocation = "";
         String searchThisExtn = ".zip";
-        List<String> files = Tools.FindFilesWithThisExtn(fileLocation, searchThisExtn);
+        List<String> files = FindFilesWithThisExtn(fileLocation, searchThisExtn);
 
         List<String[]> entitiesAll = new ArrayList<>();
 
@@ -20,19 +20,13 @@ public class CSVConverter {
         }
 
         //список объектов Entity
-        List<Entity> list = resultCounter(entitiesAll);
+        List<Entity> entityList = resultCounter(entitiesAll);
 
-        //для варианта 2
-        List<String[]> listVar02 = new ArrayList<>();
-        for (Entity ent : list) {
-            listVar02.add(new String[]{ent.getName(), null});
-            listVar02.add(new String[]{ent.getName().toUpperCase(), null});
-        }
         //одна метка - итоговое количество
-        convertToJsonVar01(list, "JSONVar01.json");
+        convertToJsonVar01(entityList, "JSONVar01.json");
         //заранее подготовленный список меток, метки без количества - null
-        convertToJsonVar02(listVar02, list, "JSONVar02.json");
+        convertToJsonVar02(entityList, "JSONVar02.json");
         //одна метка - массив всех значений, по убыванию.
-        convertToJsonVar03(list, "JSONVar03.json");
+        convertToJsonVar03(entityList, "JSONVar03.json");
     }
 }

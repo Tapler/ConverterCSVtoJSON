@@ -101,7 +101,17 @@ public class Tools {
         }
     }
 
-    public static void convertToJsonVar02(List<String[]> list, List<Entity> entityList, String fileName) {
+    public static void convertToJsonVar02(List<Entity> entityList, String fileName) {
+        List<String[]> list = new ArrayList<>();
+        List<String> checkList = new ArrayList<>();
+        for (Entity ent : entityList) {
+            list.add(new String[]{ent.getName(), null});
+            checkList.add(ent.getName());
+        }
+        for (Marks marks : Marks.values()) {
+            if (!checkList.contains(String.valueOf(marks).toLowerCase()))
+                list.add(new String[]{String.valueOf(marks).toUpperCase(), null});
+        }
         for (String[] strings : list) {
             for (Entity entity : entityList) {
                 if (strings[0].equals(entity.getName())) {
@@ -109,13 +119,13 @@ public class Tools {
                 }
             }
         }
+
         try (FileWriter writer = new FileWriter(fileName)) {
             JSONObject object = new JSONObject();
             for (String[] str : list) {
                 if (tryParse(str[1]) != 0)
                     object.put(str[0], tryParse(str[1]));
-                else
-                    object.put(str[0], null);
+                else object.put(str[0], null);
             }
             writer.write(object.toJSONString());
             writer.flush();
